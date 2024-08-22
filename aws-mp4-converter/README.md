@@ -23,7 +23,6 @@ aws-video-frame-extractor
 ```
 aws ecs run-task \
     --cluster mp4-converter-cluster \
-    --launch-type EC2\
     --task-definition mp4-converter-task-define \
     --overrides '{
         "containerOverrides": [
