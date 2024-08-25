@@ -1,6 +1,6 @@
 # docker-pipeline
 
-docker 間で連携して動作するパイプラインスクリプトのサンプル
+docker 間を連携して動作するパイプラインスクリプト
 
 ## pipeline の流れ
 
