@@ -1,7 +1,7 @@
 # docker-pipeline-script
 
-docker 間を連携して動作するパイプラインスクリプト
-メイン処理のDockerfileを他の人に書いてもらう時に使う。
+docker 間を連携して動作するパイプラインスクリプト  
+メイン処理の Dockerfile を他の人に書いてもらう時に使う。
 
 ## pipeline の流れ
 
