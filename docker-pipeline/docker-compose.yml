@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  # コントローラー
+  controller:
+    container_name: controller
+    build:
+      context: ./controller
+      dockerfile: Dockerfile
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - S3_BUCKET_NAME
+      - S3_INPUT_DIR
+      - S3_OUTPUT_DIR
+    volumes:
+      - work:/data
+    depends_on:
+      - converter
+
+  # 動画今バッター
+  converter:
+    container_name: converter
+    build:
+      context: ./converter
+      dockerfile: Dockerfile
+    image: jrottenberg/ffmpeg:latest
+    volumes:
+      - work:/data
+volumes:
+  work:
