@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  # コントローラー
+  # pipelineのコントローラー
   controller:
     container_name: controller
     build:
@@ -18,7 +18,7 @@ services:
     depends_on:
       - converter
 
-  # 動画今バッター
+  # 動画コンバッター
   converter:
     container_name: converter
     build:
