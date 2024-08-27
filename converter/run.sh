@@ -6,13 +6,22 @@ while [ ! -f /data/dl_complete ]; do
   sleep 1
 done
 
-echo "Converting video..."
+echo "Converting videos..."
 mkdir -p /data/output
 
-if ffmpeg -i /data/huukei.mp4 -vf "fps=1" /data/output/output-%03d.jpg; then
-  echo "Images generated!"
-  touch /data/converting_complete
-else
-  echo "Failed to converte video!" >&2
-  exit 1
-fi
+for video_file in /data/*.mp4; do
+  if [ -f "$video_file" ]; then
+    base_name=$(basename "$video_file" .mp4)
+    output_dir="/data/output/${base_name}"
+    mkdir -p "${output_dir}"
+
+    if ffmpeg -i "$video_file" -vf "fps=1" "${output_dir}/output-%03d.jpg"; then
+      echo "Images generated for $video_file!"
+    else
+      echo "Failed to convert $video_file!" >&2
+      exit 1
+    fi
+  fi
+done
+
+touch /data/converting_complete

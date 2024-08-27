@@ -6,7 +6,7 @@ S3_OUTPUT_DIR="${S3_OUTPUT_DIR}"
 
 # 動画のダウンロード
 echo "Downloading video from S3..."
-aws s3 cp s3://${S3_BUCKET_NAME}/${S3_INPUT_DIR}/huukei.mp4 /data/huukei.mp4
+aws s3 cp s3://${S3_BUCKET_NAME}/${S3_INPUT_DIR}/ /data/ --recursive
 
 if [ $? -eq 0 ]; then
   echo "Video downloaded successfully."
