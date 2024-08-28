@@ -11,5 +11,5 @@ RUN unzip awscliv2.zip
 RUN sudo ./aws/install
 
 # tail -fはデバッグ用
-# ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]
-ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh && tail -f /dev/null"]
+ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]
+# ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh && tail -f /dev/null"]
