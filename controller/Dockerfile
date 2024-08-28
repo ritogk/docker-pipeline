@@ -10,4 +10,6 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN unzip awscliv2.zip
 RUN sudo ./aws/install
 
-ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]
+# tail -fはデバッグ用
+# ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/app/run.sh && tail -f /dev/null"]

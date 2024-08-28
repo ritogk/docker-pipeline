@@ -1,18 +1,18 @@
 #!/bin/sh
 
 echo "Waiting for download to complete..."
-while [ ! -f /data/dl_complete ]; do
+while [ ! -f /storage/dl_complete ]; do
   echo "Waiting for download to complete..."
   sleep 1
 done
 
 echo "Converting videos..."
-mkdir -p /data/output
+mkdir -p /storage/output
 
-for video_file in /data/*.mp4; do
+for video_file in /storage/*.mp4; do
   if [ -f "$video_file" ]; then
     base_name=$(basename "$video_file" .mp4)
-    output_dir="/data/output/${base_name}"
+    output_dir="/storage/output/${base_name}"
     mkdir -p "${output_dir}"
 
     if ffmpeg -i "$video_file" -vf "fps=1" "${output_dir}/output-%03d.jpg"; then
@@ -24,4 +24,4 @@ for video_file in /data/*.mp4; do
   fi
 done
 
-touch /data/converting_complete
+touch /storage/converting_complete

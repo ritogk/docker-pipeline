@@ -18,11 +18,6 @@ export class InfraStack extends cdk.Stack {
           name: "PublicSubnet",
           subnetType: ec2.SubnetType.PUBLIC,
         },
-        {
-          cidrMask: 24,
-          name: "PrivateSubnet",
-          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS, // インターネットアクセスありのプライベートサブネット
-        },
       ],
     });
 
@@ -71,6 +66,9 @@ export class InfraStack extends cdk.Stack {
     taskRole.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess")
     );
+    taskRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMManagedInstanceCore")
+    );
 
     // EC2 インスタンスの作成 (パブリックサブネットを指定)
     const autoScalingGroup = cluster.addCapacity(
@@ -84,6 +82,29 @@ export class InfraStack extends cdk.Stack {
         vpcSubnets: { subnetType: ec2.SubnetType.PUBLIC },
       }
     );
+    const securityGroup = new ec2.SecurityGroup(
+      this,
+      "AllTrafficSecurityGroup",
+      {
+        vpc: vpc,
+        allowAllOutbound: true, // 全てのアウトバウンドトラフィックを許可
+      }
+    );
+
+    // 全てのインバウンドトラフィックを許可
+    securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
+      ec2.Port.allTraffic(),
+      "Allow all inbound IPv4 traffic"
+    );
+    securityGroup.addIngressRule(
+      ec2.Peer.anyIpv6(),
+      ec2.Port.allTraffic(),
+      "Allow all inbound IPv6 traffic"
+    );
+
+    // Auto Scaling Groupにセキュリティグループを適用
+    autoScalingGroup.addSecurityGroup(securityGroup);
     // Auto Scaling Groupをキャパシティープロバイダーとして追加
     const capacityProvider = new ecs.AsgCapacityProvider(
       this,
@@ -135,7 +156,7 @@ export class InfraStack extends cdk.Stack {
       }
     );
     converterContainer.addMountPoints({
-      containerPath: "/data",
+      containerPath: "/storage",
       sourceVolume: volumeName,
       readOnly: false,
     });
@@ -160,7 +181,7 @@ export class InfraStack extends cdk.Stack {
       }
     );
     controllerContainer.addMountPoints({
-      containerPath: "/data",
+      containerPath: "/storage",
       sourceVolume: volumeName,
       readOnly: false,
     });
