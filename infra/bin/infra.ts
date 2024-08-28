@@ -4,8 +4,7 @@ import * as cdk from "aws-cdk-lib";
 import { InfraStack } from "../lib/infra-stack";
 
 const app = new cdk.App();
-// TASK: InfraStack の名称を変える。
-new InfraStack(app, "InfraStack", {
+new InfraStack(app, "DockerPipelineScriptStack", {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
