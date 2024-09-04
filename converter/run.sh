@@ -9,7 +9,7 @@ done
 echo "Converting videos..."
 mkdir -p /storage/output
 
-for video_file in /storage/*.mp4; do
+for video_file in /storage/input/*.mp4; do
   if [ -f "$video_file" ]; then
     base_name=$(basename "$video_file" .mp4)
     output_dir="/storage/output/${base_name}"
